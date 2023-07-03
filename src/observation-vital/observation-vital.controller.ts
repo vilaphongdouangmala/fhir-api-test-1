@@ -1,5 +1,6 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ObservationVitalService } from './observation-vital.service';
+import { SearchFilterDto } from 'src/dtos/search-filter.dto';
 
 @Controller('observation-vital')
 export class ObservationVitalController {
@@ -8,8 +9,10 @@ export class ObservationVitalController {
     ) { }
 
     @Get()
-    async getVitalSigns(): Promise<any> {
-        return this.observationVitalService.getVitalSigns();
+    async getVitalSigns(
+      @Query() searchFilterDto: SearchFilterDto
+    ): Promise<any> {
+        return this.observationVitalService.getVitalSigns(searchFilterDto);
     }
 
     @Get("/:id")

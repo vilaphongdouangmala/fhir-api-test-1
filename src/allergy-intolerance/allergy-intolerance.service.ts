@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { AllergyIntolerance } from './allergy-intolerance.entity';
 import { Seriousness_id } from './seriousness-id.entity';
 import { generateAllergyTolerance } from 'src/common.models';
+import { SearchFilterDto } from 'src/dtos/search-filter.dto';
 
 @Injectable()
 export class AllergyIntoleranceService {
@@ -14,14 +15,56 @@ export class AllergyIntoleranceService {
         private readonly seriousnessRepository: Repository<Seriousness_id>
     ) { }
 
-    async getAllergyIntolerances(): Promise<any> {
-        const allergyIntolerances = this.allergyIntoleranceRepository
+    // async getAllergyIntolerances(): Promise<any> {
+    //     const allergyIntolerances = this.allergyIntoleranceRepository
+    //                                     .createQueryBuilder('allergy-intolerance')
+    //                                     .innerJoinAndSelect('allergy-intolerance.patient', 'patient')
+    //                                     .innerJoinAndSelect('allergy-intolerance.seriousness', 'seriousness_id')
+    //                                     .getMany()
+
+    //     const fhirAllergyIntolerances = (await allergyIntolerances).map(allergyIntolerance => {
+    //         return generateAllergyTolerance(allergyIntolerance)
+    //     });
+
+    //     return fhirAllergyIntolerances;
+    // }
+
+    async getAllergyIntolerances(searchFilterDto: SearchFilterDto): Promise<any> {
+        const { _lastUpdated, _cid, _count, _sort } = searchFilterDto;
+
+        const query = this.allergyIntoleranceRepository
                                         .createQueryBuilder('allergy-intolerance')
                                         .innerJoinAndSelect('allergy-intolerance.patient', 'patient')
-                                        .innerJoinAndSelect('allergy-intolerance.seriousness', 'seriousness_id')
-                                        .getMany()
+                                        .innerJoinAndSelect('allergy-intolerance.seriousness', 'seriousness_id');
+        
+        //_lastUpdated
+        if (_lastUpdated) {
+            query.andWhere('(allergy-intolerance.updatedAt >= :_lastUpdated)', { _lastUpdated });
+        }
+        
+        //_cid
+        if (_cid) {
+            query.andWhere('(patient.cid = :_cid)', {_cid});
+        }
 
-        const fhirAllergyIntolerances = (await allergyIntolerances).map(allergyIntolerance => {
+        //_count
+        if (_count) {
+            query.take(_count);
+        }
+
+        //_sort
+        if(_sort) {
+            const sortParams = _sort.split(',');
+            sortParams.forEach(param => {
+                const order = param.startsWith('-') ? 'DESC' : 'ASC';
+                const fieldName = param.startsWith('-') ? param.substring(1) : param;
+                query.addOrderBy(`allergy-intolerance.${fieldName}`, order);
+            })
+        }
+
+        const allergyIntolerances = await query.getMany();
+
+        const fhirAllergyIntolerances = allergyIntolerances.map(allergyIntolerance => {
             return generateAllergyTolerance(allergyIntolerance)
         });
 

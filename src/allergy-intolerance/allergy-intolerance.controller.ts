@@ -1,6 +1,7 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { AllergyIntolerance } from './allergy-intolerance.entity';
 import { AllergyIntoleranceService } from './allergy-intolerance.service';
+import { SearchFilterDto } from 'src/dtos/search-filter.dto';
 
 @Controller('allergy-intolerance')
 export class AllergyIntoleranceController {
@@ -9,8 +10,10 @@ export class AllergyIntoleranceController {
     ) { }
 
     @Get()
-    async getAllergyIntolerances(): Promise<any> {
-      return this.allergyIntoleranceService.getAllergyIntolerances();
+    async getAllergyIntolerances(
+      @Query() searchFilterDto: SearchFilterDto
+    ): Promise<any> {
+      return this.allergyIntoleranceService.getAllergyIntolerances(searchFilterDto);
     }
 
     @Get('/:id')
