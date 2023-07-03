@@ -1,0 +1,167 @@
+{
+    "resourceType": "Patient",
+    "id": "patient-0000000",
+    "meta": {
+        "profile": [
+            "https://fhir-ig.sil-th.org/mophpc1/StructureDefinition/mophpc-patient-base"
+        ]
+    },
+    "text": {
+        "status": "",
+        "div": ""
+    },
+    "identifier": [
+        {
+            "use": "",
+            "type": {
+                "coding": [
+                    {
+                        "system": "https://terms.sil-th.org/CodeSystem/cs-th-identifier-type",
+                        "code": "cid",
+                        "display": "เลขประจำตัวประชาชนไทย"
+                    }
+                ]
+            },
+            "system": "",
+            "value": "4259715550633",
+            "period": {
+                "start": "",
+                "end": ""
+            }
+        },
+        {
+            "use": "",
+            "type": {
+                "coding": [
+                    {
+                        "system": "",
+                        "code": "",
+                        "display": ""
+                    }
+                ]
+            },
+            "system": "",
+            "value": "",
+            "period": {
+                "start": ""
+            }
+        },
+        {
+            "use": "",
+            "type": {
+                "coding": [
+                    {
+                        "system": "",
+                        "code": "",
+                        "display": ""
+                    }
+                ]
+            },
+            "system": "",
+            "value": ""
+        }
+    ],
+    "active": true,
+    "name": [
+        {
+            "extension": [
+                {
+                    "url": "http://hl7.org/fhir/StructureDefinition/language",
+                    "valueCode": "th"
+                }
+            ],
+            "text": "ด.ญ. ศิริวรภัทร นิษฐา",
+            "family": "ศิริวรภัทร",
+            "given": [
+                "นิษฐา"
+            ],
+            "prefix": [
+                "ด.ญ."
+            ]
+        }
+    ],
+    "telecom": [
+        {
+            "system": "",
+            "value": "",
+            "use": ""
+        },
+        {
+            "system": "",
+            "value": ""
+        }
+    ],
+    "gender": "2",
+    "birthDate": "1930-06-19",
+    "address": [
+        {
+            "extension": [
+                {
+                    "url": "",
+                    "valueCodeableConcept": {
+                        "coding": [
+                            {
+                                "system": "",
+                                "code": "",
+                                "display": ""
+                            }
+                        ]
+                    }
+                },
+                {
+                    "extension": [
+                        {
+                            "url": "",
+                            "valueDecimal": 0
+                        },
+                        {
+                            "url": "",
+                            "valueDecimal": 0
+                        }
+                    ],
+                    "url": ""
+                },
+                {
+                    "extension": [
+                        {
+                            "url": "",
+                            "valueString": ""
+                        },
+                        {
+                            "url": "",
+                            "valueString": ""
+                        },
+                        {
+                            "url": "",
+                            "valueString": ""
+                        }
+                    ],
+                    "url": ""
+                }
+            ],
+            "use": "",
+            "text": "",
+            "line": [
+                ""
+            ],
+            "city": "",
+            "district": "",
+            "state": "",
+            "postalCode": ""
+        }
+    ],
+    "maritalStatus": {
+        "coding": [
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            },
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            }
+        ]
+    }
+}

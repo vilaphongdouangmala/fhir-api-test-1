@@ -1,0 +1,41 @@
+{
+    "resourceType": "Observation",
+    "id": "observation-vital-3",
+    "meta": {
+        "profile": [
+            "https://fhir-ig.sil-th.org/mophpc1/StructureDefinition/mophpc-observation-vital-base"
+        ]
+    },
+    "text": {
+        "status": "",
+        "div": ""
+    },
+    "status": "",
+    "category": [{
+        "coding": [{
+            "system": "http://terminology.hl7.org/CodeSystem/observation-category",
+            "code": "vital-signs",
+            "display": "Vital Signs"
+        }],
+        "text": "Vital Signs"
+    }],
+    "code": {
+        "coding": [{
+            "system": "",
+            "code": "",
+            "display": "Respiratory Rate"
+        }],
+        "text": "Respiratory Rate"
+    },
+    "subject": {
+        "reference": "Patient/patient-0000093",
+        "display": "น.ส. พรพรรณ เกียรติสกุล"
+    },
+    "effectiveDateTime": "Tue Mar 07 2023 11:22:01 GMT+0700 (Indochina Time)",
+    "valueQuantity": {
+        "value": "124",
+        "unit": "null",
+        "system": "",
+        "code": "null"
+    }
+}

@@ -1,0 +1,121 @@
+{
+    "resourceType": "AllergyIntolerance",
+    "id": "allergyintolerance-0000024",
+    "meta": {
+        "profile": [
+            "https://fhir-ig.sil-th.org/mophpc1/StructureDefinition/mophpc-allergyintolerance-base"
+        ]
+    },
+    "text": {
+        "status": "",
+        "div": ""
+    },
+    "extension": [
+        {
+            "url": "",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "system": "",
+                        "code": "",
+                        "display": ""
+                    }
+                ]
+            }
+        },
+        {
+            "url": "https://fhir-ig.sil-th.org/mophpc1/StructureDefinition/ex-allergyintolerance-allergy-severity",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "system": "https://terms.sil-th.org/CodeSystem/cs-thcc-allergy-severity",
+                        "code": "4",
+                        "display": "ร้ายแรง - ต้องเข้ารับการรักษาในโรงพยาบาล"
+                    }
+                ]
+            }
+        },
+        {
+            "url": "",
+            "valueCodeableConcept": {
+                "coding": [
+                    {
+                        "system": "",
+                        "code": "",
+                        "display": ""
+                    }
+                ]
+            }
+        },
+        {
+            "url": "",
+            "valueReference": {
+                "reference": ""
+            }
+        }
+    ],
+    "clinicalStatus": {
+        "coding": [
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            }
+        ]
+    },
+    "verificationStatus": {
+        "coding": [
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            }
+        ]
+    },
+    "category": [
+        ""
+    ],
+    "code": {
+        "coding": [
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            },
+            {
+                "system": "",
+                "code": "",
+                "display": ""
+            }
+        ],
+        "text": "TRAMADOL"
+    },
+    "patient": {
+        "reference": "Patient/patient-0000024"
+    },
+    "recordedDate": "2022-03-10",
+    "recorder": {
+        "reference": ""
+    },
+    "reaction": [
+        {
+            "manifestation": [
+                {
+                    "coding": [
+                        {
+                            "system": "",
+                            "code": "",
+                            "display": ""
+                        },
+                        {
+                            "system": "",
+                            "code": "",
+                            "display": ""
+                        }
+                    ],
+                    "text": "เบื่ออาหาร"
+                }
+            ]
+        }
+    ]
+}
