@@ -22,7 +22,7 @@ export class PatientsService {
     //     return fhirPatients;
     // }
 
-    async getPatientByID(hn: string): Promise<any> {
+    async getPatientById(hn: string): Promise<any> {
 
         const patient = await this.patientRepository
                                 .createQueryBuilder('patient')
@@ -37,7 +37,7 @@ export class PatientsService {
 
         const query = this.patientRepository
                             .createQueryBuilder('patient'); 
-        
+
         //_lastUpdated
         if (_lastUpdated) {
             query.andWhere('(patient.updatedAt >= :_lastUpdated)', { _lastUpdated });
@@ -67,9 +67,13 @@ export class PatientsService {
         const patients = await query.getMany();
 
         //convert to FHIR JSON format 
-        const fhirPatients = patients.map(patient => {
-            return generatePatientJson(patient);
-        });
+        //Bundle but not finished
+        const fhirPatients = { 
+            "resourceType": "Bundle",
+            "entry": [
+                patients.map(patient => ({ "resource":  generatePatientJson(patient)})),
+            ]
+        }
         return fhirPatients;
     }
 }

@@ -71,7 +71,7 @@ export class AllergyIntoleranceService {
         return fhirAllergyIntolerances;
     }
 
-    async getgetAllergyIntoleranceById(id: string): Promise<any> {
+    async getAllergyIntoleranceById(id: string): Promise<any> {
         const allergyIntolerance = await this.allergyIntoleranceRepository
                                             .createQueryBuilder('allergy-intolerance')
                                             .innerJoinAndSelect('allergy-intolerance.patient', 'patient')
@@ -80,5 +80,20 @@ export class AllergyIntoleranceService {
                                             .getOne();
 
         return generateAllergyTolerance(allergyIntolerance);
+    }
+
+    async getAllergyIntolerancesByPatientId(id: string): Promise<any> {
+        const allergyIntolerances = await this.allergyIntoleranceRepository
+                                            .createQueryBuilder('allergy-intolerance')
+                                            .innerJoinAndSelect('allergy-intolerance.patient', 'patient')
+                                            .innerJoinAndSelect('allergy-intolerance.seriousness', 'seriousness_id')
+                                            .where('patient.hn = :id', { id })
+                                            .getMany();
+
+        const fhirAllergyIntolerances = allergyIntolerances.map(allergyIntolerance => {
+            return generateAllergyTolerance(allergyIntolerance)
+        });
+
+        return fhirAllergyIntolerances;
     }
 }

@@ -20,6 +20,6 @@ export class AllergyIntoleranceController {
     async getAllergyIntoleranceById(
       @Param('id') id: string
     ): Promise<any> {
-      return this.allergyIntoleranceService.getgetAllergyIntoleranceById(id);
+      return this.allergyIntoleranceService.getAllergyIntoleranceById(id);
     }
 }

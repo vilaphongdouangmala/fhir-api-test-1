@@ -55,8 +55,6 @@ export class ObservationVitalService {
             return generateObservationVitalJson(vitalSignData);
         })
 
-        console.log(fhirVitalSigns);
-
         return fhirVitalSigns;
     }
 
@@ -71,5 +69,22 @@ export class ObservationVitalService {
                                     .getOne();
 
         return generateObservationVitalJson(vitalSignData);
+    }
+
+    async getVitalSignDataByPatientId(
+        id: string
+    ): Promise<any> {
+        const vitalSignData = await this.vitalSignDataRepository
+                                    .createQueryBuilder('vital-sign-data')
+                                    .innerJoinAndSelect('vital-sign-data.vitalSign', 'vital-sign')
+                                    .innerJoinAndSelect('vital-sign-data.patient', 'patient')
+                                    .where('patient.hn = :id', { id })
+                                    .getMany();
+
+        const fhirVitalSigns = vitalSignData.map(vitalSignData => {
+            return generateObservationVitalJson(vitalSignData);
+        })
+
+        return fhirVitalSigns;
     }
 }
