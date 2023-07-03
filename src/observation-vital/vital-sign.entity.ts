@@ -12,7 +12,7 @@ export class VitalSign {
     @Column({ name: 'vital_sign_unit', nullable: true, default: 'N/A' })
     vitalSignUnit: string;
 
-    @OneToMany(() => VitalSignData, vitalSignData => vitalSignData.vitalSigns)
+    @OneToMany(() => VitalSignData, vitalSignData => vitalSignData.vitalSign)
     vitalSignData: VitalSignData[]
 
     @CreateDateColumn()

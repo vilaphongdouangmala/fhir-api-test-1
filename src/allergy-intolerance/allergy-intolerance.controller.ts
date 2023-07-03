@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { AllergyIntolerance } from './allergy-intolerance.entity';
 import { AllergyIntoleranceService } from './allergy-intolerance.service';
 
@@ -9,7 +9,14 @@ export class AllergyIntoleranceController {
     ) { }
 
     @Get()
-    async getPatients(): Promise<any> {
-        return this.allergyIntoleranceService.getAllergyIntolerances();
+    async getAllergyIntolerances(): Promise<any> {
+      return this.allergyIntoleranceService.getAllergyIntolerances();
+    }
+
+    @Get('/:id')
+    async getAllergyIntoleranceById(
+      @Param('id') id: string
+    ): Promise<any> {
+      return this.allergyIntoleranceService.getgetAllergyIntoleranceById(id);
     }
 }

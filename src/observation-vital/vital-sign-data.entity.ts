@@ -25,7 +25,7 @@ export class VitalSignData {
 
     @ManyToOne(() => VitalSign, vitalSign => vitalSign.vitalSignData)
     @JoinColumn({ name: 'vital_sign_id' })
-    vitalSigns: VitalSign;
+    vitalSign: VitalSign;
 
     @CreateDateColumn()
     createdAt: Date;
