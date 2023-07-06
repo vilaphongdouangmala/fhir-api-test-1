@@ -1,9 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { AllergyIntolerance } from './allergy-intolerance.entity';
 import { Seriousness_id } from './seriousness-id.entity';
-import { generateAllergyTolerance } from 'src/common.models';
+import { generateAllergyTolerance, generateSearchSetBundleJson } from 'src/common.models';
 import { SearchFilterDto } from 'src/dtos/search-filter.dto';
 
 @Injectable()
@@ -14,20 +14,6 @@ export class AllergyIntoleranceService {
         @InjectRepository(Seriousness_id)
         private readonly seriousnessRepository: Repository<Seriousness_id>
     ) { }
-
-    // async getAllergyIntolerances(): Promise<any> {
-    //     const allergyIntolerances = this.allergyIntoleranceRepository
-    //                                     .createQueryBuilder('allergy-intolerance')
-    //                                     .innerJoinAndSelect('allergy-intolerance.patient', 'patient')
-    //                                     .innerJoinAndSelect('allergy-intolerance.seriousness', 'seriousness_id')
-    //                                     .getMany()
-
-    //     const fhirAllergyIntolerances = (await allergyIntolerances).map(allergyIntolerance => {
-    //         return generateAllergyTolerance(allergyIntolerance)
-    //     });
-
-    //     return fhirAllergyIntolerances;
-    // }
 
     async getAllergyIntolerances(searchFilterDto: SearchFilterDto): Promise<any> {
         const { _lastUpdated, _cid, _count, _sort } = searchFilterDto;
@@ -64,11 +50,18 @@ export class AllergyIntoleranceService {
 
         const allergyIntolerances = await query.getMany();
 
-        const fhirAllergyIntolerances = allergyIntolerances.map(allergyIntolerance => {
-            return generateAllergyTolerance(allergyIntolerance)
-        });
+        //convert to FHIR JSON bundle format 
+        const fhirJson = generateSearchSetBundleJson(
+            allergyIntolerances.map(allergyIntolerance => ({ 
+                "fullUrl": `https://example.com/api/allergy-intolerance/${allergyIntolerance.id}`,
+                "resource":  generateAllergyTolerance(allergyIntolerance)
+            })),
+        );
 
-        return fhirAllergyIntolerances;
+        //return
+        return fhirJson;
+
+        // return fhirAllergyIntolerances;
     }
 
     async getAllergyIntoleranceById(id: string): Promise<any> {
@@ -79,7 +72,11 @@ export class AllergyIntoleranceService {
                                             .where('allergy-intolerance.id = :id', { id })
                                             .getOne();
 
-        return generateAllergyTolerance(allergyIntolerance);
+        if (allergyIntolerance) {
+            return generateAllergyTolerance(allergyIntolerance);
+        }
+
+        throw new NotFoundException(`AllergyIntolerance with 'id: ${id}' is not found`);
     }
 
     async getAllergyIntolerancesByPatientId(id: string): Promise<any> {
@@ -90,9 +87,10 @@ export class AllergyIntoleranceService {
                                             .where('patient.hn = :id', { id })
                                             .getMany();
 
-        const fhirAllergyIntolerances = allergyIntolerances.map(allergyIntolerance => {
-            return generateAllergyTolerance(allergyIntolerance)
-        });
+        const fhirAllergyIntolerances = allergyIntolerances.map(allergyIntolerance => ({ 
+            "fullUrl": `https://example.com/api/allergy-intolerance/${allergyIntolerance.id}`,
+            "resource":  generateAllergyTolerance(allergyIntolerance)
+        }));
 
         return fhirAllergyIntolerances;
     }

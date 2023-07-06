@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { VitalSign } from './vital-sign.entity';
 import { Repository } from 'typeorm';
 import { VitalSignData } from './vital-sign-data.entity';
 import { Patient } from 'src/patients/patient.entity';
-import { generateObservationVitalJson } from 'src/common.models';
+import { generateObservationVitalJson, generateSearchSetBundleJson } from 'src/common.models';
 import { SearchFilterDto } from 'src/dtos/search-filter.dto';
 
 @Injectable()
@@ -50,12 +50,17 @@ export class ObservationVitalService {
         }
 
         const vitalSignData = await query.getMany();
+        
+        //convert to FHIR JSON bundle format 
+        const fhirJson = generateSearchSetBundleJson(
+            vitalSignData.map(vitalSignData => ({ 
+                "fullUrl": `https://example.com/api/observation-vital/${vitalSignData.vitalSignDataId}`,
+                "resource":  generateObservationVitalJson(vitalSignData)
+            })),
+        );
 
-        const fhirVitalSigns = vitalSignData.map(vitalSignData => {
-            return generateObservationVitalJson(vitalSignData);
-        })
-
-        return fhirVitalSigns;
+        //return
+        return fhirJson;
     }
 
     async getVitalSignDataById(
@@ -68,7 +73,11 @@ export class ObservationVitalService {
                                     .where('vital-sign-data.id = :id', { id })
                                     .getOne();
 
-        return generateObservationVitalJson(vitalSignData);
+        if (vitalSignData) {
+            return generateObservationVitalJson(vitalSignData);
+        }
+        
+        throw new NotFoundException(`Observation: Vital with 'id: ${id}' is not found`);
     }
 
     async getVitalSignDataByPatientId(
@@ -81,9 +90,10 @@ export class ObservationVitalService {
                                     .where('patient.hn = :id', { id })
                                     .getMany();
 
-        const fhirVitalSigns = vitalSignData.map(vitalSignData => {
-            return generateObservationVitalJson(vitalSignData);
-        })
+        const fhirVitalSigns = vitalSignData.map(vitalSignData => ({
+            "fullUrl": `https://example.com/api/observation-vital/${vitalSignData.vitalSignDataId}`,
+            "resource": generateObservationVitalJson(vitalSignData)
+        }));
 
         return fhirVitalSigns;
     }

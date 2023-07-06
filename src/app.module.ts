@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import { AllergyIntoleranceModule } from './allergy-intolerance/allergy-intolerance.module';
 import { ObservationVitalModule } from './observation-vital/observation-vital.module';
+import { BatchModule } from './batch/batch.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ObservationVitalModule } from './observation-vital/observation-vital.mo
     PatientsModule,
     AllergyIntoleranceModule,
     ObservationVitalModule,
+    BatchModule,
   ],
   
 })

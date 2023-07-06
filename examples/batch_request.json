@@ -1,0 +1,49 @@
+{
+    "resourceType": "Bundle",
+    "id": "bundle-request-simplesummary",
+    "type": "batch",
+    "entry": [
+        {
+            "request": {
+                "method": "GET",
+                "url": "/patients/0000047"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/patients/0000052"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/allergy-intolerance"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/observation-vital"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/observation-vital/?_lastUpdated=2022-07-02&_cid=4132429865829"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/patients/?_cid=4132429865829"
+            }
+        },
+        {
+            "request": {
+                "method": "GET",
+                "url": "/patients/0000053/$everything"
+            }
+        }
+    ]
+}

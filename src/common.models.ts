@@ -183,17 +183,8 @@ export function generatePatientJson(patient: Patient) {
                                 "url": '',
                                 "valueString": '',
                             },
-                            {
-                                "url": '',
-                                "valueString": '',
-                            },
-                            {
-                                "url": '',
-                                "valueString": '',
-                            },
                         ],
-                        "url":
-                            '',
+                        "url": '',
                     },
                 ],
                 "use": '',
@@ -208,11 +199,6 @@ export function generatePatientJson(patient: Patient) {
         ],
         "maritalStatus": {
             "coding": [
-                {
-                    "system": '',
-                    "code": '',
-                    "display": '',
-                },
                 {
                     "system": '',
                     "code": '',
@@ -345,4 +331,58 @@ export function generateAllergyTolerance(allergyIntolerance: AllergyIntolerance)
             }
         ]
     };
+}
+
+export function generateSearchSetBundleJson(entries: any) {
+    const fhirJson = { 
+        resourceType: "Bundle",
+        type: "searchset",
+        total: entries.length,
+        link: [],
+        entry: entries
+    }
+
+    // Generate links for paging (only for example purpose)
+
+    // !!! these pagining variables are examples only !!!
+    const currentPage = 2;
+    const pageSize = 10;
+    const totalMatched = entries.length;
+    // !!!
+
+    // 1. Get total number of pages
+    const totalPages = Math.ceil(totalMatched / pageSize);
+
+    // 2. Calculate the previous page number
+    const prevPage = currentPage > 1 ? currentPage - 1 : null;
+
+    // 3. Calculate the next page number
+    const nextPage = currentPage < totalPages ? currentPage + 1 : null;
+
+    //4. Apply the link
+    // Current
+    fhirJson.link = [
+        {
+            relation: "self",
+            url: `https://example.com/api/resource?_page=${currentPage}`
+        }
+    ];
+
+    // Next link
+    if (nextPage) {
+        fhirJson.link.push({
+            relation: "next",
+            url: `https://example.com/api/resource?_page=${nextPage}`
+        });
+    }
+
+    // Previous link
+    if (prevPage) {
+        fhirJson.link.push({
+            relation: "prev",
+            url: `https://example.com/api/resource?_page=${prevPage}`
+        });
+    }
+
+    return fhirJson;
 }

@@ -34,29 +34,9 @@ export class PatientsController {
   ): Promise<any> {
     const operation = request.params[0];
     if (operation === '$everything') {
-      const patient = await this.patientsService.getPatientById(id);
-      const observations = await this.observationVitalService.getVitalSignDataByPatientId(id);
-      const allergyIntolerances = await this.allergyIntoleranceService.getAllergyIntolerancesByPatientId(id);
-
-      //return in bundle format
-      return {
-        "resourceType": 'Bundle',
-        "type": "searchset",
-        "total": 3,
-        "link": [
-          {
-            "relation": "self",
-            "url": `https://fhir-server.com/Patient/${id}/$everything`
-          }
-        ],
-        "entry": [
-          { "resource": patient },
-          { "resource": observations },
-          { "resource": allergyIntolerances },
-        ],
-      };
-    } else {
-      throw new NotFoundException()
+      return this.patientsService.getPatientEverything(id);
+  } else {
+        throw new NotFoundException()
     }
   }
 }
